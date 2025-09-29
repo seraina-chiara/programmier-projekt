@@ -1,3 +1,4 @@
+# Mateo
 def create_set():
     print("Create set")
 
@@ -18,9 +19,9 @@ print(f"{'-'*40}")
 
 # Give the user its options
 print("\nWähle aus zwischen diesen Optionen:")
-print("1. Neues Karteikartenset anlegen")
-print("2. Bestehende Karten aus einem Set bearbeiten")
-print("3. Bestehendes Set üben")
+print("\t1. Neues Karteikartenset anlegen")
+print("\t2. Bestehende Karten aus einem Set bearbeiten")
+print("\t3. Bestehendes Set üben")
 
 option = input("Welche dieser drei Optionen möchten sie machen? ")
 
@@ -35,7 +36,5 @@ if(option.isdigit() and 1 <= int(option) <= 3):
         edit_set()
     elif(option == 3):
         learn_set()
-    else:
-        print("Das ist keine gültige Auswahl")
 else: 
     print("Das ist keine gültige Auswahl")
