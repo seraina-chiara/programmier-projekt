@@ -2,11 +2,11 @@
 def create_set():
     print("Create set")
 
-
+# Gui
 def edit_set():
     print("Edit set")
 
-
+# Dimitrjie
 def learn_set():
     print("Learn set")
     
