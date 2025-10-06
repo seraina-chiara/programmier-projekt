@@ -55,12 +55,14 @@ def read_all_sets():
     if not files:
         print("Im Ordner 'sets' wurden keine Dateien gefunden.")
     else:
+        # alle Optionen der Dateien ausgeben
         print("Verfügbare Dateien:")
         for i, file in enumerate(files, start=1):
             print(f"{i}. {file}")
 
         while True:
             try:
+                # Auswahl eines bestimmten Sets
                 choice = int(input(f"Geben Sie das gewünschte Set an (Nummer zwischen 1 und {len(files)}): "))
                 if 1 <= choice <= len(files):
                     selected_file = files[choice - 1]
@@ -86,21 +88,21 @@ print("\t3. Bestehende Karten aus einem Set löschen")
 print("\t4. Bestehendes Set üben")
 print("Geben Sie ein -1 ein um das Programm zu beenden")
 
-option = 0
-
-
 while True:
-    option = input("Welche dieser Optionen möchten sie machen? ")
-    
+    try:
+        option = int(input("Welche dieser Optionen möchten sie machen? "))
+    except ValueError:
+        print("Diese Option ist nicht valid")
+        continue
 
     # close application if user gives -1
-    if str(option) == "-1":
+    if option == -1:
         print("Programm wird beendet.")
         break
 
     # Validate Option
     # option has to be a digit and between 1 and 4
-    if(option.isdigit() and 1 <= int(option) <= 4):
+    if 1 <= int(option) <= 4:
 
         print(f"Du hast die Option {option} gewählt!")
         option = int(option)
