@@ -56,6 +56,74 @@ def create_set():
 def edit_cards():
     print_title("Set oder Karte bearbeiten")
 
+    while True:
+            #Menüauswahl anzeigen
+            try:
+                print("\n1. Set bearbeiten")
+                print("2. Karte bearbeiten")
+                print("-1. Zurück zum Hauptmenü")
+
+                choice = int(input("Deine Auswahl: "))
+
+                if choice == -1:
+                    break
+
+                elif choice == 1:
+                    print("Welches Set soll bearbeitet werden?")
+                    selected_file = manageFiles.read_all_sets()
+
+                    if selected_file is None:
+                        print("Es konnte kein Set ausgewählt werden")
+                        break
+
+                    if os.path.exists(selected_file) and os.path.exists(selected_file):
+                        if get_yes_or_no("Möchten Sie dieses Set bearbeiten?"):
+
+                            # Neuen Namen für das Set eingeben
+                            new_name = input("Geben Sie den neuen Namen für das Set ein: ")
+                            #Neues Pfad erstellen und Set umbenennen
+                            new_path = os.path.join(os.path.dirname(selected_file), new_name)
+                            os.rename(selected_file, new_path)
+                            print(f"Set wurde in '{new_name}' umbenannt.")
+
+                elif choice == 2:
+                    print("Aus welchem Set soll eine Karte bearbeitet werden?")
+                    selected_file = manageFiles.read_all_sets()
+
+                    if selected_file is None:
+                        print("Es konnte kein Set ausgewählt werden")
+                        break
+                        
+                    selected_card = manageFiles.select_card_from_set(selected_file)
+
+                    if selected_card is None:
+                        print("Es konnte keine Karte ausgewählt werden")
+                        break
+
+                    if get_yes_or_no("Möchten Sie diese Karte bearbeiten?"):
+                        # Alle Zeilen aus der Datei lesen
+                        with open(str(selected_file), 'r', encoding="utf-8") as fs:
+                            lines = fs.readlines()
+                            # Ausgabe der aktuellen Karte
+                            print(f"\nAktuelle Karte:")
+                            print(f"{lines[selected_card].strip()}")
+                        #Eingabe des neuen Inhalts
+                        new_content = input("\nGeben Sie den neuen Inhalt ein: ")
+                        lines[selected_card] = new_content + "\n"
+                        #Inhalte zurück in die Datei schreiben
+                        with open(str(selected_file), 'w', encoding="utf-8") as fs:
+                            lines = fs.writelines
+                            print("Karteninhalt wurde aktualisiert.")
+
+                else:
+                    print("Das war keine gültige Auswahl")
+
+            except ValueError:
+                print("Ungültige Eingabe, bitte geben Sie eine Zahl ein.")
+
+
+
+
 # -----------------------------
 # Option 3 – Set oder Karte löschen
 # -----------------------------
