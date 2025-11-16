@@ -119,7 +119,49 @@ def delete_cards():
 # Dimitrjie
 def learn_set():
     print_title("Set lernen")
+
+    file = manageFiles.read_all_sets()
+    cards = manageFiles.load_cards_from_set(file)
     
+    current_cards = cards.copy()  # Karten, die aktuell geübt werden
+    print("-" * 40)
+
+    while current_cards:
+        wrong_cards = []
+        counter = 0
+        for card in current_cards:
+            begriff = card[0]
+            definition = card[1]
+            print(begriff)
+            answer = input("Antwort: ")
+            if answer.lower() == definition.lower():
+                print("✅ Richtig!\n")
+                counter += 1
+            else:
+                print(f"❌ Falsch! Richtige Antwort: {definition}\n")
+                wrong_cards.append(card)
+        print("-" * 40)
+        print(f"Du hast bisher {counter} von {len(cards)} Fragen richtig beantwortet")
+        print("-" * 40)
+
+        if not wrong_cards:
+            print("Super! Alle Karten richtig beantwortet 🎉")
+            break  
+        
+        while True:
+            again = input("Möchtest du die falsch beantworteten Karten erneut üben? j/n: ").lower()
+            if again =="j":    
+                break
+            elif again == "n":
+                current_cards = []
+                break 
+            else:
+                print("Bitte nur 'j' oder 'n' eingeben.")
+
+        current_cards = wrong_cards  
+
+    print(f"Übung beendet. Insgesamt richtig beantwortet: {counter} von {len(cards)} Fragen")
+
  
 # -----------------------------
 # Hilfsfunktion: Titel hübsch drucken
