@@ -44,3 +44,15 @@ def select_card_from_set(selected_file):
                 print("Ungültige Nummer. Bitte erneut versuchen.")
         except ValueError:
                 print("Bitte eine Zahl eingeben")
+
+def load_cards_from_set(file):
+    cards1 = []
+    cards = []
+    with open(file, "r", encoding="utf-8") as infile:
+        lines = infile.readlines()
+        for line in lines:
+            line = line.strip("\n")
+            cards1 = line.split("=")
+            cards.append(cards1)   
+    return cards
+        
