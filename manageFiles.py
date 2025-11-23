@@ -1,12 +1,12 @@
 import os
+FOLDER = "sets"
 
-def read_all_sets():
+def select_set():
     # Ordnerpfad
-    folder = "sets"
     # Alle Dateien im Ordner abrufen
-    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
+    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f))]
     if not files:
-        print(f"Im Ordner '{folder}' wurden keine Dateien gefunden.")
+        print(f"Im Ordner '{FOLDER}' wurden keine Dateien gefunden.")
     else:
         # alle Optionen der Dateien ausgeben
         print("Verfügbare Dateien:")
@@ -56,3 +56,17 @@ def load_cards_from_set(file):
             cards.append(cards1)   
     return cards
         
+def check_set_name(name: str):
+    if not name:
+        print("Bitte geben Sie etwas ein. ")
+        return False
+    
+    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f))]
+    # alle namen iterieren
+    for file in files:
+        # falls die namen gleich sind, ist es ein fehler
+        if(name.lower() == file.lower().removesuffix(".txt")):
+            print(f"Der Set-Name '{name}' ist bereits vergeben.")
+            return False
+    
+    return True
