@@ -20,7 +20,7 @@ def select_set():
                 if 1 <= choice <= len(files):
                     selected_file = files[choice - 1]
                     print(f"\nDu hast '{choice - 1}. {selected_file}' ausgewählt.")
-                    return folder + '/' + selected_file
+                    return FOLDER + '/' + selected_file
                 else:
                     print("Ungültige Nummer. Bitte erneut versuchen.")
             except ValueError:

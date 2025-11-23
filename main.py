@@ -10,7 +10,7 @@ def show_menu():
     print("\nWähle aus zwischen diesen Optionen:")
     print("\t1. Neues Karteikartenset anlegen")
     print("\t2. Bestehende Karten aus einem Set bearbeiten")
-    print("\t3. Bestehende Karten aus einem Set löschen")
+    print("\t3. Set oder Karten aus einem Set löschen")
     print("\t4. Bestehendes Set üben")
     print("Geben Sie ein -1 ein um das Programm zu beenden")
 
@@ -79,8 +79,8 @@ def create_set():
             begriff = input(f"Gib {i}. Begriff ein: ")
             definition = input(f"Gib {i}. Definition ein: ")
             # mit = getrennt abspeichern
-            # TODO: kommt noch nicht auf neuer Zeile
-            file.writelines(f"{begriff}={definition}\n")
+            file.write(f"{begriff}={definition}\n")
+        print("Das Set wurde mit den gewünschten Karten abgespeichert.")
         
 
 # -----------------------------
