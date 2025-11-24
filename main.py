@@ -1,5 +1,6 @@
 import manageFiles
 import os
+FOLDER = "sets"
 
 
 # -----------------------------
@@ -9,7 +10,7 @@ def show_menu():
     print("\nWähle aus zwischen diesen Optionen:")
     print("\t1. Neues Karteikartenset anlegen")
     print("\t2. Bestehende Karten aus einem Set bearbeiten")
-    print("\t3. Bestehende Karten aus einem Set löschen")
+    print("\t3. Set oder Karten aus einem Set löschen")
     print("\t4. Bestehendes Set üben")
     print("Geben Sie ein -1 ein um das Programm zu beenden")
 
@@ -48,6 +49,39 @@ def choose_option():
 # Mateo
 def create_set():
     print_title("Neues Set erstellen")
+
+    new_set_title = ""
+    card_count = 0
+    is_name_ok = False
+    # solange der name noch nicht gut ist, abfragen
+    while not is_name_ok:
+        new_set_title = input("Wie soll das neue Set heissen? ")
+        is_name_ok = manageFiles.check_set_name(new_set_title)
+
+    while card_count <= 0:
+        try:
+            card_count = int(input("Wie viele Karten soll das Set haben? "))
+        # Invalide Eingabe
+        except ValueError:
+            print("Das war keine gültige Auswahl") 
+
+    # exisitert der Ordner
+    if not os.path.exists(FOLDER):
+        os.makedirs(FOLDER)
+
+    # Datei-Pfad zusammensetzen (Titel + .txt)
+    file_path = os.path.join(FOLDER, f"{new_set_title}.txt")
+
+    with open(file_path, "w", encoding="utf-8") as file:
+        # für alle karten iterieren
+        for i in range(1, card_count + 1):
+            # begriff und definition abfragaen
+            begriff = input(f"Gib {i}. Begriff ein: ")
+            definition = input(f"Gib {i}. Definition ein: ")
+            # mit = getrennt abspeichern
+            file.write(f"{begriff}={definition}\n")
+        print("Das Set wurde mit den gewünschten Karten abgespeichert.")
+        
 
 # -----------------------------
 # Option 2 – Karten bearbeiten
@@ -139,44 +173,58 @@ def delete_cards():
 
             choice = int(input("Deine Auswahl: "))
 
+            # -1 bedeutet abbrechen
             if choice == -1:
                 break
 
+            # Ein Set soll gelöscht werden
             elif choice == 1:
                 print("Welches Set soll gelöscht werden?")
-                selected_file = manageFiles.read_all_sets()
+                selected_file = manageFiles.select_set()
 
+                # falls ein set gewählt wurde, und diese datei auch exisitert
                 if selected_file and os.path.exists(selected_file):
+                    # bestätigung
                     if get_yes_or_no("Sind Sie sicher?"):
+                        # löschen der ganzen datei
                         os.remove(selected_file)
                         print(f"Set '{selected_file}' wurde gelöscht.")
                 else:
                     print(f"Set '{selected_file}' existiert nicht.")
 
-                
+            # Eine Karte aus einem Set soll gelöscht werden   
             elif choice == 2:
                 print("Aus welchem Set soll eine Karte gelöscht werden?")
-                selected_file = manageFiles.read_all_sets()
+                selected_file = manageFiles.select_set()
 
+                # überprüfung ob die datei exisitert
                 if selected_file is None:
                     print("Es konnte kein Set ausgewählt werden")
                     break
 
                 selected_card = manageFiles.select_card_from_set(selected_file)
 
+                # überprüfung ob eine karte gewählt werden konnte
                 if selected_card is None:
                     print("Es konnte keine Karte ausgewählt werden")
                     break
 
+                # bestätigung
                 if get_yes_or_no("Sind Sie sicher?"):
+                    # liesst alle zeilen ein
                     with open(str(selected_file), 'r', encoding="utf-8") as fs:
+                        # speichert alle zeilen in die variabel lines
                         lines = fs.readlines()
+                    # löscht die gewünschte zeile aus der variabel
                     del lines[selected_card]
+                    # überschreibt das die ganze datei mit der variabel lines
+                    # die gelöschte zeile ist nun nicht mehr drin
                     with open(str(selected_file), 'w', encoding="utf-8") as fs:
                         fs.writelines(lines)
-                
+            # Ungültige aber valide Eingabe    
             else:
                 print("Das war keine gültige Auswahl")
+        # Invalide Eingabe
         except ValueError:
             print("Das war keine gültige Auswahl")
 
@@ -188,7 +236,7 @@ def delete_cards():
 def learn_set():
     print_title("Set lernen")
 
-    file = manageFiles.read_all_sets()
+    file = manageFiles.select_set()
     cards = manageFiles.load_cards_from_set(file)
     
     current_cards = cards.copy()  # Karten, die aktuell geübt werden
@@ -239,6 +287,10 @@ def print_title(title):
     print(title.center(40))
     print("-" * 40)
 
+# -----------------------------
+# Hilfsfunktion: Validierte Ja/Nein Eingabe
+# Returns: ein Boolean (True/False)
+# -----------------------------
 def get_yes_or_no(question):
     while True:
         answer = input(f"{question} (j/n): ")
