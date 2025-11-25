@@ -104,17 +104,20 @@ def edit_cards():
 
                 elif choice == 1:
                     print("Welches Set soll bearbeitet werden?")
-                    selected_file = manageFiles.read_all_sets()
+                    selected_file = manageFiles.select_set()
 
                     if selected_file is None:
                         print("Es konnte kein Set ausgewählt werden")
                         break
 
-                    if os.path.exists(selected_file) and os.path.exists(selected_file):
+                    if selected_file and os.path.exists(selected_file):
                         if get_yes_or_no("Möchten Sie dieses Set bearbeiten?"):
 
                             # Neuen Namen für das Set eingeben
                             new_name = input("Geben Sie den neuen Namen für das Set ein: ")
+                            if not new_name.endswith('.txt'):
+                                new_name += '.txt'
+                            
                             #Neues Pfad erstellen und Set umbenennen
                             new_path = os.path.join(os.path.dirname(selected_file), new_name)
                             os.rename(selected_file, new_path)
@@ -122,7 +125,7 @@ def edit_cards():
 
                 elif choice == 2:
                     print("Aus welchem Set soll eine Karte bearbeitet werden?")
-                    selected_file = manageFiles.read_all_sets()
+                    selected_file = manageFiles.select_set()
 
                     if selected_file is None:
                         print("Es konnte kein Set ausgewählt werden")
@@ -136,17 +139,21 @@ def edit_cards():
 
                     if get_yes_or_no("Möchten Sie diese Karte bearbeiten?"):
                         # Alle Zeilen aus der Datei lesen
-                        with open(str(selected_file), 'r', encoding="utf-8") as fs:
-                            lines = fs.readlines()
+                        with open(str(selected_file), 'r', encoding="utf-8") as file:
+                            lines = file.readlines()
+                            # Überprüfen, ob die ausgewählte Karte noch existiert
+                            if selected_card < 0 or selected_card >= len(lines):
+                                print("Karte existiert nicht mehr.")
+                                break
                             # Ausgabe der aktuellen Karte
                             print(f"\nAktuelle Karte:")
                             print(f"{lines[selected_card].strip()}")
                         #Eingabe des neuen Inhalts
                         new_content = input("\nGeben Sie den neuen Inhalt ein: ")
                         lines[selected_card] = new_content + "\n"
-                        #Inhalte zurück in die Datei schreiben
-                        with open(str(selected_file), 'w', encoding="utf-8") as fs:
-                            lines = fs.writelines
+                        # Schreibt die aktualisierten Zeilen zurück in die Datei
+                        with open(str(selected_file), 'w', encoding="utf-8") as file:
+                            file.writelines(lines)
                             print("Karteninhalt wurde aktualisiert.")
 
                 else:
@@ -154,8 +161,8 @@ def edit_cards():
 
             except ValueError:
                 print("Ungültige Eingabe, bitte geben Sie eine Zahl ein.")
-
-
+            except Exception as e:
+                print(f"Ein Fehler ist aufgetreten: {e}")
 
 
 # -----------------------------
