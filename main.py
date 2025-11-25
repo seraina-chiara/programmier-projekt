@@ -7,6 +7,8 @@ FOLDER = "sets"
 # Hauptmenü anzeigen
 # -----------------------------
 def show_menu():
+    """Zeigt das Hauptmenü mit allen verfügbaren Optionen an."""
+    
     print("\nWähle aus zwischen diesen Optionen:")
     print("\t1. Neues Karteikartenset anlegen")
     print("\t2. Bestehende Karten aus einem Set bearbeiten")
@@ -19,8 +21,15 @@ def show_menu():
 # Auswahl im Hauptmenü
 # -----------------------------
 def choose_option():
+    """
+    Hauptschleife für die Menüauswahl.
+    Verarbeitet Benutzereingaben und ruft entsprechende Funktionen auf.
+    Läuft bis der Benutzer -1 eingibt.
+    """
+
     while True:
         show_menu()
+        
         try:
             option = int(input("Welche dieser Optionen möchten sie machen? "))
         except ValueError:
@@ -48,6 +57,15 @@ def choose_option():
 # -----------------------------
 # Mateo
 def create_set():
+        
+    """
+    Erstellt ein neues Karteikarten-Set.
+    
+    Der Benutzer wird nach einem Namen und der Anzahl der Karten gefragt.
+    Anschliessend werden Begriff und Definition für jede Karte abgefragt.
+    Das Set wird als .txt-Datei im sets/ Ordner gespeichert.
+    """
+
     print_title("Neues Set erstellen")
 
     new_set_title = ""
