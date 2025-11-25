@@ -296,9 +296,10 @@ def learn_set():
 # Hilfsfunktion: Titel hübsch drucken
 # -----------------------------
 def print_title(title):
-    print("\n" + "-" * 40)
-    print(title.center(40))
-    print("-" * 40)
+    SEPARATOR_WIDTH = 40
+    print("\n" + "-" * SEPARATOR_WIDTH)
+    print(title.center(SEPARATOR_WIDTH))
+    print("-" * SEPARATOR_WIDTH)
 
 # -----------------------------
 # Hilfsfunktion: Validierte Ja/Nein Eingabe
