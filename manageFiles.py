@@ -20,7 +20,7 @@ def select_set():
                 choice = int(input(f"Geben Sie das gewünschte Set an (Nummer zwischen 1 und {len(files)}): "))
                 if 1 <= choice <= len(files):
                     selected_file = files[choice - 1]
-                    print(f"\nSie haben '{choice-1}. {selected_file}' ausgewählt.")
+                    print(f"\nSie haben '{choice}. {selected_file}' ausgewählt.")
                     return os.path.join(FOLDER, selected_file)
                 else:
                     print("Ungültige Nummer. Bitte erneut versuchen.")
@@ -49,13 +49,22 @@ def select_card_from_set(selected_file):
 def load_cards_from_set(file):
     cards1 = []
     cards = []
-    with open(file, "r", encoding="utf-8") as infile:
-        lines = infile.readlines()
-        for line in lines:
-            line = line.strip("\n")
-            cards1 = line.split("=")
-            cards.append(cards1)   
-    return cards
+    try:
+
+        with open(file, "r", encoding="utf-8") as infile:
+            lines = infile.readlines()
+            for line in lines:
+                line = line.strip("\n")
+                cards1 = line.split("=")
+                cards.append(cards1)   
+        return cards
+    
+    except FileNotFoundError:
+        print(f"Die Datei {file} wurde nicht gefunden.")
+        return []
+    except Exception as e:
+        print(f"Ein Fehler ist aufgetreten: {e}")
+        return []
         
 def check_set_name(name: str):
     if not name :
