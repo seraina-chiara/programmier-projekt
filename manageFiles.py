@@ -20,7 +20,7 @@ def select_set():
                 choice = int(input(f"Geben Sie das gewünschte Set an (Nummer zwischen 1 und {len(files)}): "))
                 if 1 <= choice <= len(files):
                     selected_file = files[choice - 1]
-                    print(f"\nSie haben '{choice - 1}. {selected_file}' ausgewählt.")
+                    print(f"\nSie haben '{choice-1}. {selected_file}' ausgewählt.")
                     return os.path.join(FOLDER, selected_file)
                 else:
                     print("Ungültige Nummer. Bitte erneut versuchen.")
@@ -58,7 +58,7 @@ def load_cards_from_set(file):
     return cards
         
 def check_set_name(name: str):
-    if not name:
+    if not name :
         print("Bitte geben Sie etwas ein. ")
         return False
     
