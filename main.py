@@ -24,7 +24,7 @@ def choose_option():
         try:
             option = int(input("Welche dieser Optionen möchten sie machen? "))
         except ValueError:
-            print("Diese Option ist nicht valid")
+            print("Diese Option ist nicht gültig")
             continue
 
         # close application if user gives -1
@@ -65,7 +65,7 @@ def create_set():
         except ValueError:
             print("Das war keine gültige Auswahl") 
 
-    # exisitert der Ordner
+    # existiert der Ordner
     if not os.path.exists(FOLDER):
         os.makedirs(FOLDER)
 
@@ -75,7 +75,7 @@ def create_set():
     with open(file_path, "w", encoding="utf-8") as file:
         # für alle karten iterieren
         for i in range(1, card_count + 1):
-            # begriff und definition abfragaen
+            # begriff und definition abfragen
             begriff = input(f"Gib {i}. Begriff ein: ")
             definition = input(f"Gib {i}. Definition ein: ")
             # mit = getrennt abspeichern
