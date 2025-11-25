@@ -124,10 +124,13 @@ def edit_cards():
                             if not new_name.endswith('.txt'):
                                 new_name += '.txt'
                             
-                            #Neues Pfad erstellen und Set umbenennen
+                            # Neuen Pfad erstellen und Set umbenennen
                             new_path = os.path.join(os.path.dirname(selected_file), new_name)
-                            os.rename(selected_file, new_path)
-                            print(f"Set wurde in '{new_name}' umbenannt.")
+                            if os.path.exists(new_path):
+                                print(f"Fehler: Ein Set mit dem Namen '{new_name}' existiert bereits. Bitte wählen Sie einen anderen Namen.")
+                            else:
+                                os.rename(selected_file, new_path)
+                                print(f"Set wurde in '{new_name}' umbenannt.")
 
                 elif choice == 2:
                     print("Aus welchem Set soll eine Karte bearbeitet werden?")
@@ -192,7 +195,7 @@ def delete_cards():
 
             # Ein Set soll gelöscht werden
             elif choice == 1:
-                print("Welches Set soll gelöscht werden?")
+                # falls ein set gewählt wurde, und diese datei auch existiert
                 selected_file = manageFiles.select_set()
 
                 # falls ein set gewählt wurde, und diese datei auch exisitert
@@ -207,7 +210,7 @@ def delete_cards():
 
             # Eine Karte aus einem Set soll gelöscht werden   
             elif choice == 2:
-                print("Aus welchem Set soll eine Karte gelöscht werden?")
+                # überprüfung ob die datei existiert
                 selected_file = manageFiles.select_set()
 
                 # überprüfung ob die datei exisitert
@@ -221,7 +224,7 @@ def delete_cards():
                 if selected_card is None:
                     print("Es konnte keine Karte ausgewählt werden")
                     break
-
+                    # liest alle zeilen ein
                 # bestätigung
                 if get_yes_or_no("Sind Sie sicher?"):
                     # liesst alle zeilen ein
