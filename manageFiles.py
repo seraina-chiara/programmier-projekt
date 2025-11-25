@@ -7,6 +7,7 @@ def select_set():
     files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f))]
     if not files:
         print(f"Im Ordner '{FOLDER}' wurden keine Dateien gefunden.")
+        return None
     else:
         # alle Optionen der Dateien ausgeben
         print("Verfügbare Dateien:")
@@ -19,8 +20,8 @@ def select_set():
                 choice = int(input(f"Geben Sie das gewünschte Set an (Nummer zwischen 1 und {len(files)}): "))
                 if 1 <= choice <= len(files):
                     selected_file = files[choice - 1]
-                    print(f"\nDu hast '{choice - 1}. {selected_file}' ausgewählt.")
-                    return FOLDER + '/' + selected_file
+                    print(f"\nSie haben '{choice - 1}. {selected_file}' ausgewählt.")
+                    return os.path.join(FOLDER, selected_file)
                 else:
                     print("Ungültige Nummer. Bitte erneut versuchen.")
             except ValueError:
