@@ -88,6 +88,12 @@ def create_set():
 # ----------------------------
 # Gui
 def edit_cards():
+    
+    """
+    Ermöglicht dem Benutzer, ein bestehendes Karteikartenset oder einzelne Karten zu bearbeiten.
+    Es werden die Optionen angeboten, ein Set umzubenennen oder den Inhalt einer Karte zu bearbeiten.
+    """
+
     print_title("Set oder Karte bearbeiten")
 
     while True:
