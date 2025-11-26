@@ -47,6 +47,8 @@ def select_card_from_set(selected_file):
                 print("Bitte eine Zahl eingeben")
 
 def load_cards_from_set(file):
+    """Lädt Karteikarten aus einer Set-Datei."""
+
     cards1 = []
     cards = []
     try:
@@ -55,7 +57,7 @@ def load_cards_from_set(file):
             lines = infile.readlines()
             for line in lines:
                 line = line.strip("\n")
-                cards1 = line.split("=")
+                cards1 = line.split("=", 1)
                 cards.append(cards1)   
         return cards
     
