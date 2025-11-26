@@ -107,98 +107,108 @@ def create_set():
 # ----------------------------
 # Gui
 def edit_cards():
-    
     """
     Ermöglicht dem Benutzer, ein bestehendes Karteikartenset oder einzelne Karten zu bearbeiten.
     Es werden die Optionen angeboten, ein Set umzubenennen oder den Inhalt einer Karte zu bearbeiten.
     """
-
-    print_title("Set oder Karte bearbeiten")
+    helper_functions.print_title("Set oder Karte bearbeiten")
 
     while True:
-            #Menüauswahl anzeigen
-            try:
-                print("\n1. Set bearbeiten")
-                print("2. Karte bearbeiten")
-                print("-1. Zurück zum Hauptmenü")
+        #Menüauswahl anzeigen
+        try:
+            print("\n1. Set umbennen")
+            print("2. Karte bearbeiten")
+            print("-1. Zurück zum Hauptmenü")
 
-                choice = int(input("Deine Auswahl: "))
+            choice = int(input("Deine Auswahl: "))
 
-                if choice == -1:
-                    break
+            if choice == -1:
+                break
 
-                elif choice == 1:
-                    print("Welches Set soll bearbeitet werden?")
-                    selected_file = manageFiles.select_set()
+            elif choice == 1:
+                edit_set_name()
+            
+            elif choice == 2:
+                edit_card_content()
 
-                    if selected_file is None:
-                        print("Es konnte kein Set ausgewählt werden")
-                        break
+            else:
+                print("Das war keine gültige Auswahl")
 
-                    if selected_file and os.path.exists(selected_file):
-                        if get_yes_or_no("Möchten Sie dieses Set bearbeiten?"):
+        except ValueError:
+            print("Ungültige Eingabe, bitte geben Sie eine Zahl ein.")
+        except Exception as e:
+            print(f"Ein Fehler ist aufgetreten: {e}")
 
-                            # Neuen Namen für das Set eingeben
-                            new_name = input("Geben Sie den neuen Namen für das Set ein: ")
-                            if not new_name.endswith('.txt'):
-                                new_name += '.txt'
-                            
-                            # Neuen Pfad erstellen und Set umbenennen
-                            new_path = os.path.join(os.path.dirname(selected_file), new_name)
-                            if os.path.exists(new_path):
-                                print(f"Fehler: Ein Set mit dem Namen '{new_name}' existiert bereits. Bitte wählen Sie einen anderen Namen.")
-                            else:
-                                os.rename(selected_file, new_path)
-                                print(f"Set wurde in '{new_name}' umbenannt.")
+def edit_set_name():
+    """Benennt ein bestehendes Set um."""
+    print("Welches Set soll umbenannt werden?")
+    selected_file = manageFiles.select_set()
 
-                elif choice == 2:
-                    print("Aus welchem Set soll eine Karte bearbeitet werden?")
-                    selected_file = manageFiles.select_set()
+    if selected_file is None:
+        print("Es konnte kein Set ausgewählt werden")
+        return
 
-                    if selected_file is None:
-                        print("Es konnte kein Set ausgewählt werden")
-                        break
-                        
-                    selected_card = manageFiles.select_card_from_set(selected_file)
+    if selected_file and os.path.exists(selected_file):
+        if helper_functions.get_yes_or_no("Möchten Sie dieses Set bearbeiten?"):
+            # Neuen Namen für das Set eingeben
+            new_name = input("Geben Sie den neuen Namen für das Set ein: ")
+            if not new_name.endswith('.txt'):
+                new_name += '.txt'
+            
+            # Neuen Pfad erstellen und Set umbenennen
+            new_path = os.path.join(os.path.dirname(selected_file), new_name)
+            if os.path.exists(new_path):
+                print(f"Fehler: Ein Set mit dem Namen '{new_name}' existiert bereits. Bitte wählen Sie einen anderen Namen.")
+            else:
+                os.rename(selected_file, new_path)
+                print(f"Set wurde in '{new_name}' umbenannt.")
 
-                    if selected_card is None:
-                        print("Es konnte keine Karte ausgewählt werden")
-                        break
+def edit_card_content():
+    """Bearbeitet den Inhalt einer Karte."""
 
-                    if get_yes_or_no("Möchten Sie diese Karte bearbeiten?"):
-                        # Alle Zeilen aus der Datei lesen
-                        with open(str(selected_file), 'r', encoding="utf-8") as file:
-                            lines = file.readlines()
-                            # Überprüfen, ob die ausgewählte Karte noch existiert
-                            if selected_card < 0 or selected_card >= len(lines):
-                                print("Karte existiert nicht mehr.")
-                                break
-                            # Ausgabe der aktuellen Karte
-                            print(f"\nAktuelle Karte:")
-                            print(f"{lines[selected_card].strip()}")
-                        #Eingabe des neuen Inhalts
-                        new_content = input("\nGeben Sie den neuen Inhalt ein: ")
-                        lines[selected_card] = new_content + "\n"
-                        # Schreibt die aktualisierten Zeilen zurück in die Datei
-                        with open(str(selected_file), 'w', encoding="utf-8") as file:
-                            file.writelines(lines)
-                            print("Karteninhalt wurde aktualisiert.")
+    while True:
+        print("Aus welchem Set soll eine Karte bearbeitet werden?")
+        selected_file = manageFiles.select_set()
 
-                else:
-                    print("Das war keine gültige Auswahl")
+        if selected_file is None:
+            print("Es konnte kein Set ausgewählt werden")
+            return
+            
+        selected_card = manageFiles.select_card_from_set(selected_file)
 
-            except ValueError:
-                print("Ungültige Eingabe, bitte geben Sie eine Zahl ein.")
-            except Exception as e:
-                print(f"Ein Fehler ist aufgetreten: {e}")
+        if selected_card is None:
+            print("Es konnte keine Karte ausgewählt werden")
+            return
 
+        if helper_functions.get_yes_or_no("Möchten Sie diese Karte bearbeiten?"):
+            # Alle Zeilen aus der Datei lesen
+            with open(str(selected_file), 'r', encoding="utf-8") as file:
+                lines = file.readlines()
+                # Überprüfen, ob die ausgewählte Karte noch existiert
+                if selected_card < 0 or selected_card >= len(lines):
+                    print("Karte existiert nicht mehr.")
+                    return
+                # Ausgabe der aktuellen Karte
+                print(f"\nAktuelle Karte:")
+                print(f"{lines[selected_card].strip()}")
+            #Eingabe des neuen Inhalts
+            new_content = input("\nGeben Sie den neuen Inhalt ein (Format: Begriff=Definition): ")
+            if "=" not in new_content:
+                print("Fehler: Format muss 'Begriff=Definition' sein.")
+                continue
+            lines[selected_card] = new_content + "\n"
+            # Schreibt die aktualisierten Zeilen zurück in die Datei
+            with open(str(selected_file), 'w', encoding="utf-8") as file:
+                file.writelines(lines)
+                print("Karteninhalt wurde aktualisiert.")
+        break
 
 # -----------------------------
 # Option 3 – Set oder Karte löschen
 # -----------------------------
 # Seraina
 def delete_cards():
-    print_title("Set oder Karte löschen")
+    helper_functions.print_title("Set oder Karte löschen")
 
     while True:
         try:
