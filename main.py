@@ -9,7 +9,7 @@ FOLDER = "sets"
 # -----------------------------
 def show_menu():
     """Zeigt das Hauptmenü mit allen verfügbaren Optionen an."""
-    
+
     print("\nWähle aus zwischen diesen Optionen:")
     print("\t1. Neues Karteikartenset anlegen")
     print("\t2. Bestehende Karten aus einem Set bearbeiten")
@@ -32,7 +32,7 @@ def choose_option():
         show_menu()
         
         try:
-            option = int(input("Welche dieser Optionen möchten sie machen? "))
+            option = int(input("Welche dieser Optionen möchten Sie auswählen? "))
         except ValueError:
             print("Diese Option ist nicht gültig")
             continue
@@ -95,8 +95,8 @@ def create_set():
         # für alle karten iterieren
         for i in range(1, card_count + 1):
             # begriff und definition abfragen
-            begriff = input(f"Gib {i}. Begriff ein: ")
-            definition = input(f"Gib {i}. Definition ein: ")
+            begriff = input(f"Geben Sie {i}. Begriff ein: ")
+            definition = input(f"Geben Sie {i}. Definition ein: ")
             # mit = getrennt abspeichern
             file.write(f"{begriff}={definition}\n")
         print("Das Set wurde mit den gewünschten Karten abgespeichert.")
@@ -302,7 +302,7 @@ def learn_set():
                 print(f"❌ Falsch! Richtige Antwort: {definition}\n")
                 wrong_cards.append(card)
         print("-" * 40)
-        print(f"Du hast bisher {counter} von {len(cards)} Fragen richtig beantwortet")
+        print(f"Sie haben bisher {counter} von {len(cards)} Fragen richtig beantwortet")
         print("-" * 40)
 
         if not wrong_cards:
@@ -310,7 +310,7 @@ def learn_set():
             break  
         
         while True:
-            again = input("Möchtest du die falsch beantworteten Karten erneut üben? j/n: ").lower()
+            again = input("Möchten Sie die falsch beantworteten Karten erneut üben? j/n: ").lower()
             if again =="j":    
                 break
             elif again == "n":

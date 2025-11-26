@@ -39,7 +39,7 @@ def select_card_from_set(selected_file):
             choice = int(input(f"\nGeben Sie die gewünschte Karte an (Nummer zwischen 1 und {len(lines)}): "))
             if 1 <= choice <= len(lines):
                 selected_card = lines[choice - 1].strip()
-                print(f"\nDu hast '{choice}. {selected_card}' ausgewählt.")
+                print(f"\nSie haben '{choice}. {selected_card}' ausgewählt.")
                 return choice - 1
             else:
                 print("Ungültige Nummer. Bitte erneut versuchen.")
