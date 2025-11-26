@@ -1,4 +1,5 @@
 import manageFiles
+import helper_functions
 import os
 FOLDER = "sets"
 
@@ -66,7 +67,7 @@ def create_set():
     Das Set wird als .txt-Datei im sets/ Ordner gespeichert.
     """
 
-    print_title("Neues Set erstellen")
+    helper_functions.print_title("Neues Set erstellen")
 
     new_set_title = ""
     card_count = 0
@@ -219,7 +220,7 @@ def delete_cards():
                 # falls ein set gewählt wurde, und diese datei auch exisitert
                 if selected_file and os.path.exists(selected_file):
                     # bestätigung
-                    if get_yes_or_no("Sind Sie sicher?"):
+                    if helper_functions.get_yes_or_no("Sind Sie sicher?"):
                         # löschen der ganzen datei
                         os.remove(selected_file)
                         print(f"Set '{selected_file}' wurde gelöscht.")
@@ -244,7 +245,7 @@ def delete_cards():
                     break
                     # liest alle zeilen ein
                 # bestätigung
-                if get_yes_or_no("Sind Sie sicher?"):
+                if helper_functions.get_yes_or_no("Sind Sie sicher?"):
                     # liesst alle zeilen ein
                     with open(str(selected_file), 'r', encoding="utf-8") as fs:
                         # speichert alle zeilen in die variabel lines
@@ -268,7 +269,7 @@ def delete_cards():
 # -----------------------------
 # Dimitrjie
 def learn_set():
-    print_title("Set lernen")
+    helper_functions.print_title("Set lernen")
 
     file = manageFiles.select_set()
     cards = manageFiles.load_cards_from_set(file)
@@ -312,32 +313,9 @@ def learn_set():
 
     print(f"Übung beendet. Insgesamt richtig beantwortet: {counter} von {len(cards)} Fragen")
 
- 
-# -----------------------------
-# Hilfsfunktion: Titel hübsch drucken
-# -----------------------------
-def print_title(title):
-    SEPARATOR_WIDTH = 40
-    print("\n" + "-" * SEPARATOR_WIDTH)
-    print(title.center(SEPARATOR_WIDTH))
-    print("-" * SEPARATOR_WIDTH)
-
-# -----------------------------
-# Hilfsfunktion: Validierte Ja/Nein Eingabe
-# Returns: ein Boolean (True/False)
-# -----------------------------
-def get_yes_or_no(question):
-    while True:
-        answer = input(f"{question} (j/n): ")
-        if answer == 'j':
-            return True
-        elif answer == 'n':
-            return False
-        else:
-            print("Bitte geben sie j oder n ein")
 
 def main():
-    print_title("MemoCards")
+    helper_functions.print_title("MemoCards")
     choose_option()
 
 
