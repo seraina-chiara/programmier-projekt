@@ -3,14 +3,16 @@ FOLDER = "sets"
 
 def select_set():
     # Ordnerpfad
-    # Alle Dateien im Ordner abrufen
+    # Alle Dateien im Ordner abrufen - os.listdir(FOLDER) holt sich alles von Ordner sets und prüft mit os.path.file ob "sets/f" eine Datei ist
     files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f))]
+    #wenn nichts in der Liste files vorhanden ist
     if not files:
         print(f"Im Ordner '{FOLDER}' wurden keine Dateien gefunden.")
         return None
     else:
         # alle Optionen der Dateien ausgeben
         print("Verfügbare Dateien:")
+        #in i wird die Zahl gespeichert und in file die Dateiname
         for i, file in enumerate(files, start=1):
             print(f"\t{i}. {file}")
 
@@ -18,9 +20,12 @@ def select_set():
             try:
                 # Auswahl eines bestimmten Sets
                 choice = int(input(f"Geben Sie das gewünschte Set an (Nummer zwischen 1 und {len(files)}): "))
+                #wenn choice zwischen 1 und len(files) ist
                 if 1 <= choice <= len(files):
+                    #-1 weil index bei 0 startet
                     selected_file = files[choice - 1]
                     print(f"\nSie haben '{choice}. {selected_file}' ausgewählt.")
+                    #gibt komplette Pfad zurück
                     return os.path.join(FOLDER, selected_file)
                 else:
                     print("Ungültige Nummer. Bitte erneut versuchen.")
@@ -46,29 +51,34 @@ def select_card_from_set(selected_file):
         except ValueError:
                 print("Bitte eine Zahl eingeben")
 
-def load_cards_from_set(file):
+def load_cards_from_set(file_path):
     """Lädt Karteikarten aus einer Set-Datei."""
 
-    cards1 = []
-    cards = []
+    card_pair = []
+    all_cards = []
     try:
 
-        with open(file, "r", encoding="utf-8") as infile:
+        with open(file_path, "r", encoding="utf-8") as infile:
             lines = infile.readlines()
             for line in lines:
                 line = line.strip("\n")
-                cards1 = line.split("=", 1)
-                cards.append(cards1)   
-        return cards
+                #in die liste card_pair z.B. ["Schweiz", "Bern"]
+                card_pair = line.split("=", 1)
+                all_cards.append(card_pair)   
+        #gibt all_cards zurück in zweidimensionale liste z.B. [["Schweiz", "Bern"], ["..",".."]]
+        return all_cards
     
     except FileNotFoundError:
-        print(f"Die Datei {file} wurde nicht gefunden.")
+        print(f"Die Datei {file_path} wurde nicht gefunden.")
+        #gibt leere Liste zurück damit das Programm nicht crasht
         return []
     except Exception as e:
         print(f"Ein Fehler ist aufgetreten: {e}")
         return []
         
 def check_set_name(name: str):
+    """Prüft, ob ein Name, den der User für ein neues Set eingegeben hat, zulässig ist."""
+    #keine Eingabe
     if not name :
         print("Bitte geben Sie etwas ein. ")
         return False
@@ -76,7 +86,7 @@ def check_set_name(name: str):
     files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f))]
     # alle namen iterieren
     for file in files:
-        # falls die namen gleich sind, ist es ein fehler
+        # falls die namen gleich sind, ist es ein fehler. Alles wird klein gemacht und .txt wird entfernt damit Name geprüft wird
         if(name.lower() == file.lower().removesuffix(".txt")):
             print(f"Der Set-Name '{name}' ist bereits vergeben.")
             return False

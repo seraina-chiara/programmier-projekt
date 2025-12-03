@@ -2,6 +2,7 @@
 # Hilfsfunktion: Titel hübsch drucken
 # -----------------------------
 def print_title(title):
+    """Zeigt gewünschten Titel an"""
     SEPARATOR_WIDTH = 40
     print("\n" + "-" * SEPARATOR_WIDTH)
     print(title.center(SEPARATOR_WIDTH))
@@ -12,6 +13,7 @@ def print_title(title):
 # Returns: ein Boolean (True/False)
 # -----------------------------
 def get_yes_or_no(question):
+    """Validierte Ja/Nein Eingabe"""
     while True:
         answer = input(f"{question} (j/n): ")
         if answer == 'j':

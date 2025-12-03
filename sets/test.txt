@@ -1,0 +1,3 @@
+Aargau=Aarau
+Italien=Rom
+Deutschland=Berlin

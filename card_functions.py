@@ -28,6 +28,7 @@ def create_set():
         new_set_title = input("Wie soll das neue Set heissen? ")
         is_name_ok = manageFiles.check_set_name(new_set_title)
 
+    #solange die Anzahl der Karten 0 oder kleiner ist
     while card_count <= 0:
         try:
             card_count = int(input("Wie viele Karten soll das Set haben? "))
@@ -95,6 +96,7 @@ def edit_set_name():
     print("Welches Set soll umbenannt werden?")
     selected_file = manageFiles.select_set()
 
+    #wenn Ordner sets leer ist
     if selected_file is None:
         print("Es konnte kein Set ausgewählt werden")
         return
@@ -231,19 +233,32 @@ def delete_cards():
 # -----------------------------
 # Dimitrjie
 def learn_set():
+    """Hauptfunktion zum Lernen eines Sets.
+    Fragt Karten ab, prüft Antworten und wiederholt falsche Karten."""
+
     helper_functions.print_title("Set lernen")
 
-    file = manageFiles.select_set()
-    cards = manageFiles.load_cards_from_set(file)
+    #Ruft die Funktion aus manageFiles auf, die den Pfad zurückgibt
+    file_path = manageFiles.select_set()
     
-    current_cards = cards.copy()  # Karten, die aktuell geübt werden
+    if file_path is None:
+        return
+    
+    #Lädt die Datei in eine Liste von Listen z.B. [["Schweiz", "Bern"], ["..",".."]]
+    cards = manageFiles.load_cards_from_set(file_path)
+    
+    current_cards = cards.copy()
     print("-" * 40)
 
+    counter = 0
+
+    #solange Karten in current_cards vorhanden sind
     while current_cards:
         wrong_cards = []
-        counter = 0
         for card in current_cards:
+            #linke Element zB. "Schweiz"
             begriff = card[0]
+            #rechte Element z.B. "Bern"
             definition = card[1]
             print(begriff)
             answer = input("Antwort: ")
@@ -257,20 +272,25 @@ def learn_set():
         print(f"Sie haben bisher {counter} von {len(cards)} Fragen richtig beantwortet")
         print("-" * 40)
 
+        #wenn wrong_cards leer -> Fertig
         if not wrong_cards:
             print("Super! Alle Karten richtig beantwortet 🎉")
             break  
         
+
         while True:
             again = input("Möchten Sie die falsch beantworteten Karten erneut üben? j/n: ").lower()
             if again =="j":    
+                #Schleife geht weiter, aber nur wrong_cards werden geprüft
                 break
             elif again == "n":
+                #liste wird geleert und somit die Schleife von oben abgebrochen
                 current_cards = []
                 break 
             else:
                 print("Bitte nur 'j' oder 'n' eingeben.")
 
+        #nächste Runde sind nur die Karten, die wir falsch hatten
         current_cards = wrong_cards  
 
     print(f"Übung beendet. Insgesamt richtig beantwortet: {counter} von {len(cards)} Fragen")
