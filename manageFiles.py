@@ -2,9 +2,15 @@ import os
 FOLDER = "sets"
 
 def select_set():
-    # Ordnerpfad
+    """
+    Zeigt alle verfügbaren Karteikarten-Sets an und lässt den Benutzer eines auswählen.
+   
+    Die Funktion listet alle .txt-Dateien im sets/ Ordner auf und fordert den Benutzer
+    auf, eine Nummer einzugeben. Bei ungültigen Eingaben wird der Benutzer erneut
+    zur Eingabe aufgefordert.
+    """
     # Alle Dateien im Ordner abrufen - os.listdir(FOLDER) holt sich alles von Ordner sets und prüft mit os.path.file ob "sets/f" eine Datei ist
-    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f))]
+    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f)) and f.endswith(".txt")]
     #wenn nichts in der Liste files vorhanden ist
     if not files:
         print(f"Im Ordner '{FOLDER}' wurden keine Dateien gefunden.")
@@ -33,6 +39,15 @@ def select_set():
                 print("Bitte eine Zahl eingeben")
 
 def select_card_from_set(selected_file):
+    """
+    Zeigt alle Karten aus einem Set an und lässt den Benutzer eine auswählen.
+   
+    Die Funktion liest alle Zeilen aus der angegebenen Set-Datei und zeigt sie
+    nummeriert an. Der Benutzer kann durch Eingabe einer Nummer eine Karte auswählen.
+   
+    Args:
+        selected_file (str): Pfad zur Set-Datei, aus der eine Karte ausgewählt werden soll
+    """
     with open(str(selected_file), 'r', encoding="utf-8") as fs:
         lines = fs.readlines()
 
@@ -52,7 +67,16 @@ def select_card_from_set(selected_file):
                 print("Bitte eine Zahl eingeben")
 
 def load_cards_from_set(file_path):
-    """Lädt Karteikarten aus einer Set-Datei."""
+    """
+    Lädt alle Karteikarten aus einer Set-Datei.
+   
+    Die Funktion liest die Set-Datei zeilenweise und teilt jede Zeile am '=' Zeichen,
+    um Begriff und Definition zu trennen. Die Karten werden als Liste von Listen
+    zurückgegeben, wobei jede innere Liste [Begriff, Definition] enthält.
+   
+    Args:
+        file_path (str): Pfad zur Set-Datei, die geladen werden soll
+    """
 
     card_pair = []
     all_cards = []
@@ -83,7 +107,7 @@ def check_set_name(name: str):
         print("Bitte geben Sie etwas ein. ")
         return False
     
-    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f))]
+    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f)) and f.endswith(".txt")]
     # alle namen iterieren
     for file in files:
         # falls die namen gleich sind, ist es ein fehler. Alles wird klein gemacht und .txt wird entfernt damit Name geprüft wird

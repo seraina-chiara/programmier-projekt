@@ -1,19 +1,17 @@
-# -----------------------------
-# Hilfsfunktion: Titel hübsch drucken
-# -----------------------------
+
 def print_title(title):
-    """Zeigt gewünschten Titel an"""
+    """Hilfsfunktion: Titel hübsch drucken"""
     SEPARATOR_WIDTH = 40
     print("\n" + "-" * SEPARATOR_WIDTH)
     print(title.center(SEPARATOR_WIDTH))
     print("-" * SEPARATOR_WIDTH)
 
-# -----------------------------
-# Hilfsfunktion: Validierte Ja/Nein Eingabe
-# Returns: ein Boolean (True/False)
-# -----------------------------
+
 def get_yes_or_no(question):
-    """Validierte Ja/Nein Eingabe"""
+    """
+    Hilfsfunktion: Validierte Ja/Nein Eingabe
+    Returns: ein Boolean (True/False)
+    """
     while True:
         answer = input(f"{question} (j/n): ")
         if answer == 'j':

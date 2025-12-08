@@ -16,9 +16,7 @@ def show_menu():
     print("Geben Sie ein -1 ein um das Programm zu beenden")
 
 
-# -----------------------------
-# Auswahl im Hauptmenü
-# -----------------------------
+
 def choose_option():
     """
     Hauptschleife für die Menüauswahl.
@@ -58,6 +56,13 @@ def choose_option():
 
 
 def main():
+    """
+    Haupteinstiegspunkt des MemoCards-Programms.
+   
+    Zeigt den Titel an und startet die Hauptmenü-Schleife,
+    die dem Benutzer ermöglicht, Karteikarten-Sets zu erstellen,
+    zu bearbeiten, zu löschen oder zu üben.
+    """
     #Ruft die Funktion print_title() aus Datei helper_functions.py und zeigt Titel MemoCards
     helper_functions.print_title("MemoCards")
     #Funktion choose_option() wird ausgeführt                                           

@@ -12,10 +12,13 @@ def create_set():
         
     """
     Erstellt ein neues Karteikarten-Set.
-    
+   
     Der Benutzer wird nach einem Namen und der Anzahl der Karten gefragt.
     Anschliessend werden Begriff und Definition für jede Karte abgefragt.
     Das Set wird als .txt-Datei im sets/ Ordner gespeichert.
+   
+    Der Set-Name wird validiert und darf nicht bereits existieren.
+    Bei ungültigen Eingaben wird der Benutzer erneut zur Eingabe aufgefordert.
     """
 
     helper_functions.print_title("Neues Set erstellen")
@@ -61,7 +64,12 @@ def create_set():
 def edit_cards():
     """
     Ermöglicht dem Benutzer, ein bestehendes Karteikartenset oder einzelne Karten zu bearbeiten.
-    Es werden die Optionen angeboten, ein Set umzubenennen oder den Inhalt einer Karte zu bearbeiten.
+   
+    Der Benutzer kann zwischen folgenden Optionen wählen:
+    - Set umbenennen: Ändert den Namen eines bestehenden Sets
+    - Karte bearbeiten: Aktualisiert den Inhalt einer einzelnen Karte
+   
+    Die Funktion läuft in einer Schleife bis der Benutzer -1 eingibt.
     """
     helper_functions.print_title("Set oder Karte bearbeiten")
 
@@ -92,7 +100,13 @@ def edit_cards():
             print(f"Ein Fehler ist aufgetreten: {e}")
 
 def edit_set_name():
-    """Benennt ein bestehendes Set um."""
+    """
+    Benennt ein bestehendes Set um.
+   
+    Der Benutzer wählt ein Set aus der Liste verfügbarer Sets aus.
+    Nach Bestätigung kann ein neuer Name eingegeben werden.
+    Die Datei wird nur umbenannt, wenn der neue Name noch nicht existiert.
+    """
     print("Welches Set soll umbenannt werden?")
     selected_file = manageFiles.select_set()
 
@@ -117,7 +131,16 @@ def edit_set_name():
                 print(f"Set wurde in '{new_name}' umbenannt.")
 
 def edit_card_content():
-    """Bearbeitet den Inhalt einer Karte."""
+    """
+    Bearbeitet den Inhalt einer einzelnen Karte.
+   
+    Der Benutzer wählt zunächst ein Set und dann eine Karte aus diesem Set aus.
+    Die aktuelle Karte wird angezeigt und der Benutzer kann einen neuen Inhalt eingeben.
+    Der neue Inhalt muss dem Format 'Begriff=Definition' entsprechen.
+   
+    Bei ungültigem Format wird eine Fehlermeldung angezeigt und der Benutzer
+    kann es erneut versuchen.
+    """
 
     while True:
         print("Aus welchem Set soll eine Karte bearbeitet werden?")
@@ -146,10 +169,20 @@ def edit_card_content():
                 print(f"{lines[selected_card].strip()}")
             #Eingabe des neuen Inhalts
             new_content = input("\nGeben Sie den neuen Inhalt ein (Format: Begriff=Definition): ")
-            if "=" not in new_content:
-                print("Fehler: Format muss 'Begriff=Definition' sein.")
+             # 1. Wir teilen den String am ersten Gleichheitszeichen
+            parts = new_content.split("=", 1)
+            # 2. Prüfung: Gab es überhaupt ein "="?
+            if len(parts) < 2:
+                print("Fehler: Das Format muss zwingend ein '=' enthalten.")
                 continue
-            lines[selected_card] = new_content + "\n"
+            begriff = parts[0].strip()
+            definition = parts[1].strip()
+            # 3. Prüfung: Sind Begriff oder Definition leer?
+            if not begriff or not definition:
+                print("Fehler: Weder der Begriff noch die Definition dürfen leer sein.")
+                continue
+            # Alles okay -> Wir bauen die Zeile sauber wieder zusammen
+            lines[selected_card] = f"{begriff}={definition}\n"
             # Schreibt die aktualisierten Zeilen zurück in die Datei
             with open(str(selected_file), 'w', encoding="utf-8") as file:
                 file.writelines(lines)
@@ -162,6 +195,16 @@ def edit_card_content():
 # -----------------------------
 # Seraina
 def delete_cards():
+    """
+    Löscht ein komplettes Set oder einzelne Karten aus einem Set.
+   
+    Der Benutzer kann zwischen folgenden Optionen wählen:
+    - Ganzes Set löschen: Entfernt die komplette Set-Datei
+    - Einzelne Karte löschen: Entfernt nur eine spezifische Karte aus einem Set
+   
+    Vor jeder Löschung wird eine Sicherheitsabfrage (j/n) durchgeführt.
+    Die Funktion läuft in einer Schleife bis der Benutzer -1 eingibt.
+    """
     helper_functions.print_title("Set oder Karte löschen")
 
     while True:
@@ -233,8 +276,18 @@ def delete_cards():
 # -----------------------------
 # Dimitrjie
 def learn_set():
-    """Hauptfunktion zum Lernen eines Sets.
-    Fragt Karten ab, prüft Antworten und wiederholt falsche Karten."""
+    """
+    Interaktiver Lernmodus für Karteikarten.
+   
+    Der Benutzer wählt ein Set aus und wird dann zu allen Begriffen abgefragt.
+    Nach jeder Antwort erhält der Benutzer sofortiges Feedback.
+   
+    Nach jeder Runde wird die Anzahl richtiger Antworten angezeigt.
+    Falsch beantwortete Karten können wiederholt werden, bis alle Karten
+    korrekt beantwortet wurden oder der Benutzer abbricht.
+   
+    Die Funktion ist case-insensitive (Gross-/Kleinschreibung wird ignoriert).
+    """
 
     helper_functions.print_title("Set lernen")
 
