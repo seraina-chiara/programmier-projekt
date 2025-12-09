@@ -215,54 +215,17 @@ def delete_cards():
 
             choice = int(input("Deine Auswahl: "))
 
-            # -1 bedeutet abbrechen
             if choice == -1:
                 break
 
             # Ein Set soll gelöscht werden
             elif choice == 1:
-                # falls ein set gewählt wurde, und diese datei auch existiert
-                selected_file = manageFiles.select_set()
-
-                # falls ein set gewählt wurde, und diese datei auch exisitert
-                if selected_file and os.path.exists(selected_file):
-                    # bestätigung
-                    if helper_functions.get_yes_or_no("Sind Sie sicher?"):
-                        # löschen der ganzen datei
-                        os.remove(selected_file)
-                        print(f"Set '{selected_file}' wurde gelöscht.")
-                else:
-                    print(f"Set '{selected_file}' existiert nicht.")
+                delete_entire_set()
 
             # Eine Karte aus einem Set soll gelöscht werden   
             elif choice == 2:
-                # überprüfung ob die datei existiert
-                selected_file = manageFiles.select_set()
+                delete_single_card()
 
-                # überprüfung ob die datei exisitert
-                if selected_file is None:
-                    print("Es konnte kein Set ausgewählt werden")
-                    break
-
-                selected_card = manageFiles.select_card_from_set(selected_file)
-
-                # überprüfung ob eine karte gewählt werden konnte
-                if selected_card is None:
-                    print("Es konnte keine Karte ausgewählt werden")
-                    break
-                    # liest alle zeilen ein
-                # bestätigung
-                if helper_functions.get_yes_or_no("Sind Sie sicher?"):
-                    # liesst alle zeilen ein
-                    with open(str(selected_file), 'r', encoding="utf-8") as fs:
-                        # speichert alle zeilen in die variabel lines
-                        lines = fs.readlines()
-                    # löscht die gewünschte zeile aus der variabel
-                    del lines[selected_card]
-                    # überschreibt das die ganze datei mit der variabel lines
-                    # die gelöschte zeile ist nun nicht mehr drin
-                    with open(str(selected_file), 'w', encoding="utf-8") as fs:
-                        fs.writelines(lines)
             # Ungültige aber valide Eingabe    
             else:
                 print("Das war keine gültige Auswahl")
@@ -270,11 +233,69 @@ def delete_cards():
         except ValueError:
             print("Das war keine gültige Auswahl")
 
-  
+def delete_entire_set():
+    """
+    Löscht ein komplettes Set.
+   
+    Der Benutzer wählt ein Set aus der Liste aus.
+    Vor der Löschung wird eine Sicherheitsabfrage (j/n) durchgeführt.
+    Die komplette Set-Datei wird gelöscht.
+    """
+    selected_file = manageFiles.select_set()
+
+    # falls ein set gewählt wurde, und diese datei auch existiert
+    if selected_file and os.path.exists(selected_file):
+        # bestätigung
+        if helper_functions.get_yes_or_no("Sind Sie sicher?"):
+            # löschen der ganzen datei
+            os.remove(selected_file)
+            print(f"Set '{selected_file}' wurde gelöscht.")
+    else:
+        print(f"Set '{selected_file}' existiert nicht.")
+
+def delete_single_card():
+    """
+    Löscht eine einzelne Karte aus einem Set.
+   
+    Der Benutzer wählt zunächst ein Set und dann eine Karte aus diesem Set aus.
+    Vor der Löschung wird eine Sicherheitsabfrage (j/n) durchgeführt.
+    Nur die ausgewählte Karte wird aus dem Set entfernt.
+    """
+    selected_file = manageFiles.select_set()
+
+    # überprüfung ob ein set gewählt werden konnte
+    if selected_file is None:
+        print("Es konnte kein Set ausgewählt werden")
+        return
+
+    selected_card = manageFiles.select_card_from_set(selected_file)
+
+    # überprüfung ob eine karte gewählt werden konnte
+    if selected_card is None:
+        print("Es konnte keine Karte ausgewählt werden")
+        return
+
+    # bestätigung
+    if helper_functions.get_yes_or_no("Sind Sie sicher?"):
+
+        # liest alle zeilen ein
+        with open(str(selected_file), 'r', encoding="utf-8") as fs:
+            
+            # speichert alle zeilen in die variabel lines
+            lines = fs.readlines()
+
+        # löscht die gewünschte zeile aus der variabel
+        del lines[selected_card]
+
+        # überschreibt das die ganze datei mit der variabel lines
+        with open(str(selected_file), 'w', encoding="utf-8") as fs:
+            fs.writelines(lines)
+        print("Karte wurde erfolgreich gelöscht.")
+
 # -----------------------------
 # Option 4 – Lernen
 # -----------------------------
-# Dimitrjie
+# Dimitrije
 def learn_set():
     """
     Interaktiver Lernmodus für Karteikarten.
