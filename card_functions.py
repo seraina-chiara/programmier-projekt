@@ -116,6 +116,7 @@ def edit_set_name():
 
     if selected_file and os.path.exists(selected_file):
         if helper_functions.get_yes_or_no("Möchten Sie dieses Set bearbeiten?"):
+            
             # Neuen Namen für das Set eingeben
             new_name = input("Geben Sie den neuen Namen für das Set ein: ")
             if not new_name.endswith('.txt'):
@@ -174,7 +175,9 @@ def edit_card_content():
                 print(f"\nAktuelle Karte:")
                 print(f"{lines[selected_card].strip()}")
 
-            # Eingabe des neuen Inhalts
+        # Eingabe des neuen Inhalts
+        while True:
+
             new_content = input("\nGeben Sie den neuen Inhalt ein (Format: Begriff=Definition): ")
             new_content = new_content.strip()
 
@@ -194,19 +197,20 @@ def edit_card_content():
                 print("Fehler: Weder der Begriff noch die Definition dürfen leer sein.")
                 continue
 
-            # Aktualisieren der ausgewählten Karte
-            lines[selected_card] = f"{begriff}={definition}\n"
+            break  # Gültiger Inhalt, Schleife verlassen
+    
+        # Aktualisieren der ausgewählten Karte
+        lines[selected_card] = f"{begriff}={definition}\n"
 
-            # Schreibt die aktualisierten Zeilen zurück in die Datei
-            with open(str(selected_file), 'w', encoding="utf-8") as file:
-                file.writelines(lines)
-                print("Karteninhalt wurde aktualisiert.")
-                
-            # Übersicht aller Karten anzeigen
-            for i, card in enumerate(manageFiles.load_cards_from_set(selected_file), start=1):
-                print(f"{i}. {card[0]} = {card[1]}")
+        # Schreibt die aktualisierten Zeilen zurück in die Datei
+        with open(str(selected_file), 'w', encoding="utf-8") as file:
+            file.writelines(lines)
+            print("Karteninhalt wurde aktualisiert.")
+            
+        # Übersicht aller Karten anzeigen
+        for i, card in enumerate(manageFiles.load_cards_from_set(selected_file), start=1):
+            print(f"{i}. {card[0]} = {card[1]}")
 
-            break
 # -----------------------------
 # Option 3 – Set oder Karte löschen
 # -----------------------------
