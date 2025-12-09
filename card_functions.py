@@ -128,7 +128,12 @@ def edit_set_name():
                 print(f"Fehler: Ein Set mit dem Namen '{new_name}' existiert bereits. Bitte wählen Sie einen anderen Namen.")
             else:
                 os.rename(selected_file, new_path)
-                print(f"Set wurde in '{new_name}' umbenannt.")
+                print(f"Set wurde in '{new_name}' umbenannt.\n")
+
+                # Übersicht aller Sets anzeigen
+                files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f)) and f.endswith(".txt")]
+                for i, file in enumerate(files, start=1):
+                    print(f"\t{i}. {file}")
 
 def edit_card_content():
     """
@@ -160,49 +165,61 @@ def edit_card_content():
             # Alle Zeilen aus der Datei lesen
             with open(str(selected_file), 'r', encoding="utf-8") as file:
                 lines = file.readlines()
+
                 # Überprüfen, ob die ausgewählte Karte noch existiert
                 if selected_card < 0 or selected_card >= len(lines):
                     print("Karte existiert nicht mehr.")
                     return
+                
                 # Ausgabe der aktuellen Karte
                 print(f"\nAktuelle Karte:")
                 print(f"{lines[selected_card].strip()}")
-            #Eingabe des neuen Inhalts
+
+            # Eingabe des neuen Inhalts
             new_content = input("\nGeben Sie den neuen Inhalt ein (Format: Begriff=Definition): ")
-             # 1. Wir teilen den String am ersten Gleichheitszeichen
+            new_content = new_content.strip()
+
+            # Aufteilen des Inhalts in Begriff und Definition
             parts = new_content.split("=", 1)
-            # 2. Prüfung: Gab es überhaupt ein "="?
+
+            # Validierung des Formats
             if len(parts) < 2:
                 print("Fehler: Das Format muss zwingend ein '=' enthalten.")
                 continue
+
             begriff = parts[0].strip()
             definition = parts[1].strip()
-            # 3. Prüfung: Sind Begriff oder Definition leer?
+
+            # Validierung, dass weder Begriff noch Definition leer sind
             if not begriff or not definition:
                 print("Fehler: Weder der Begriff noch die Definition dürfen leer sein.")
                 continue
-            # Alles okay -> Wir bauen die Zeile sauber wieder zusammen
+
+            # Aktualisieren der ausgewählten Karte
             lines[selected_card] = f"{begriff}={definition}\n"
+
             # Schreibt die aktualisierten Zeilen zurück in die Datei
             with open(str(selected_file), 'w', encoding="utf-8") as file:
                 file.writelines(lines)
                 print("Karteninhalt wurde aktualisiert.")
                 
-            break
+            # Übersicht aller Karten anzeigen
+            for i, card in enumerate(manageFiles.load_cards_from_set(selected_file), start=1):
+                print(f"{i}. {card[0]} = {card[1]}")
 
+            break
 # -----------------------------
 # Option 3 – Set oder Karte löschen
 # -----------------------------
 # Seraina
 def delete_cards():
     """
-    Löscht ein komplettes Set oder einzelne Karten aus einem Set.
+    Hauptmenü für Löschoptionen.
    
     Der Benutzer kann zwischen folgenden Optionen wählen:
     - Ganzes Set löschen: Entfernt die komplette Set-Datei
     - Einzelne Karte löschen: Entfernt nur eine spezifische Karte aus einem Set
    
-    Vor jeder Löschung wird eine Sicherheitsabfrage (j/n) durchgeführt.
     Die Funktion läuft in einer Schleife bis der Benutzer -1 eingibt.
     """
     helper_functions.print_title("Set oder Karte löschen")
