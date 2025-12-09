@@ -160,27 +160,39 @@ Möchtest du die falsch beantworteten Karten erneut üben? j/n: j
 ```
 programmier-projekt/
 │
-├── main.py                 # Hauptprogramm mit Menülogik und Funktionen
-│   ├── show_menu()        # Zeigt das Hauptmenü an
-│   ├── choose_option()    # Verarbeitet Benutzerauswahl
-│   ├── create_set()       # Erstellt neue Karteikarten-Sets
-│   ├── edit_cards()       # Bearbeitet Sets und Karten
-│   ├── delete_cards()     # Löscht Sets oder einzelne Karten
-│   ├── learn_set()        # Übungsmodus mit Feedback
-│   ├── print_title()      # Hilfsfunktion für Titel
-│   └── get_yes_or_no()    # Hilfsfunktion für Ja/Nein-Abfragen
+├── main.py                         # Hauptprogramm mit Menülogik
+│   ├── show_menu()                # Zeigt das Hauptmenü an
+│   └── choose_option()            # Verarbeitet Benutzerauswahl
 │
-├── manageFiles.py          # Datei-Management und Hilfsfunktionen
-│   ├── select_set()       # Interaktive Set-Auswahl
-│   ├── select_card_from_set()  # Interaktive Karten-Auswahl
-│   ├── load_cards_from_set()   # Lädt Karten aus Datei
-│   └── check_set_name()   # Validiert Set-Namen
+├── card_functions.py               # Kartenverwaltungsfunktionen
+Karteikarten-Sets (Mateo)
+│   ├── create_set()               # Erstellt neue Sets
+Bearbeitungsoptionen (Gui)
+│   ├── edit_cards()               # Hauptmenü für Bearbeitung
+│   │   ├── edit_set_name()        # Benennt ein Set um
+│   │   └── edit_card_content()    # Bearbeitet Karteninhalt
+Löschoptionen (Seraina)
+│   ├── delete_cards()             # Hauptmenü für Löschoptionen 
+│   │   ├── delete_entire_set()    # Löscht ein komplettes Set
+│   │   └── delete_single_card()   # Löscht eine einzelne Karte
+Interaktives lernen (Dimitrjie)
+│   └── learn_set()                # Interaktiver Übungsmodus 
 │
-├── sets/                   # Ordner für Karteikarten-Sets (wird automatisch erstellt)
+├── helper_functions.py             # Hilfsfunktionen 
+│   ├── print_title()              # Formatierte Titelausgabe
+│   └── get_yes_or_no()            # Ja/Nein-Abfragen
+│
+├── manageFiles.py                  # Datei-Management
+│   ├── select_set()               # Interaktive Set-Auswahl
+│   ├── select_card_from_set()     # Interaktive Karten-Auswahl
+│   ├── load_cards_from_set()      # Lädt Karten aus Datei
+│   └── check_set_name()           # Validiert Set-Namen
+│
+├── sets/                           # Ordner für Karteikarten-Sets (wird automatisch erstellt)
 │   ├── Allgemeinwissen.txt
-│   └── ...                # Weitere Set-Dateien
+│   └── ...                        # Weitere Set-Dateien
 │
-└── README.md              # Diese Datei
+└── README.md                       # Diese Datei
 ```
 
 ### Dateiformat
