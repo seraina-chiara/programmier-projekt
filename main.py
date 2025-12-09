@@ -39,13 +39,13 @@ def choose_option():
             print("Programm wird beendet.")
             break
 
-        if(option == 1):
+        if option == 1:
             card_functions.create_set()
-        elif(option == 2):
+        elif option == 2:
             card_functions.edit_cards()
-        elif(option == 3):
+        elif option == 3:
             card_functions.delete_cards()
-        elif(option == 4):
+        elif option == 4:
             card_functions.learn_set()
         else: 
             print("Das ist keine gültige Auswahl")
