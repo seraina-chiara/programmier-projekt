@@ -48,14 +48,22 @@ def select_card_from_set(selected_file):
     Args:
         selected_file (str): Pfad zur Set-Datei, aus der eine Karte ausgewählt werden soll
     """
+    # Alle Karten aus der Datei lesen
     with open(str(selected_file), 'r', encoding="utf-8") as fs:
         lines = fs.readlines()
 
+#Validierung ob lines leer ist
+    if not lines:
+        print("Dieses Set enthält keine Karten.")
+        return None
+
+# Alle Karten anzeigen
     for i, line in enumerate(lines, start=1):
         print(f"\t{i}. {line.strip()}")
 
     while True:
         try:
+            # Auswahl einer bestimmten Karte
             choice = int(input(f"\nGeben Sie die gewünschte Karte an (Nummer zwischen 1 und {len(lines)}): "))
             if 1 <= choice <= len(lines):
                 selected_card = lines[choice - 1].strip()
@@ -63,6 +71,7 @@ def select_card_from_set(selected_file):
                 return choice - 1
             else:
                 print("Ungültige Nummer. Bitte erneut versuchen.")
+
         except ValueError:
                 print("Bitte eine Zahl eingeben")
 
