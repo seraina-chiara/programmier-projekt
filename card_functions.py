@@ -205,11 +205,12 @@ def edit_card_content():
         # Schreibt die aktualisierten Zeilen zurück in die Datei
         with open(str(selected_file), 'w', encoding="utf-8") as file:
             file.writelines(lines)
-            print("Karteninhalt wurde aktualisiert.")
+            print("Karteninhalt wurde aktualisiert.\n")
             
         # Übersicht aller Karten anzeigen
         for i, card in enumerate(manageFiles.load_cards_from_set(selected_file), start=1):
             print(f"{i}. {card[0]} = {card[1]}")
+        print() 
 
 # -----------------------------
 # Option 3 – Set oder Karte löschen
