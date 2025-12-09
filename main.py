@@ -1,5 +1,6 @@
-import helper_functions
 import card_functions
+import helper_functions
+FOLDER = "sets"
 
 
 # -----------------------------
@@ -26,11 +27,9 @@ def choose_option():
 
     while True:
         show_menu()
-        #prüft, ob der eingegebene Wert eine Zahl (integer) ist
+        
         try:
             option = int(input("Welche dieser Optionen möchten Sie auswählen? "))
-        
-        #wenn es ein anderer Wert ist wird der Fehler aufgefengen und das Menu wieder angezeigt 
         except ValueError:
             print("Diese Option ist nicht gültig")
             continue
@@ -39,18 +38,15 @@ def choose_option():
         if option == -1:
             print("Programm wird beendet.")
             break
-        
-        #Wenn eine Zahl von 1-4 eingegeben wird, wird die entsprechende Funktion aus card_functions.py aufgerufen
-        if option == 1:
+
+        if(option == 1):
             card_functions.create_set()
-        elif option == 2:
+        elif(option == 2):
             card_functions.edit_cards()
-        elif option == 3:
+        elif(option == 3):
             card_functions.delete_cards()
-        elif option == 4:
+        elif(option == 4):
             card_functions.learn_set()
-        
-        #Wenn ein integer eingegeben wird der nicht zwischen 1-4 und -1 ist, wird eine Meldung angezeigt
         else: 
             print("Das ist keine gültige Auswahl")
 
@@ -65,8 +61,7 @@ def main():
     """
     #Ruft die Funktion print_title() aus Datei helper_functions.py und zeigt Titel MemoCards
     helper_functions.print_title("MemoCards")
-    #Funktion choose_option() wird ausgeführt                                           
-    choose_option()                                                                     
+    choose_option()
 
 
 if __name__ == '__main__':
