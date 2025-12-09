@@ -9,7 +9,6 @@ FOLDER = "sets"
 # -----------------------------
 # Mateo
 def create_set():
-        
     """
     Erstellt ein neues Karteikarten-Set.
    
@@ -363,7 +362,7 @@ def learn_set():
         print(f"Sie haben bisher {counter} von {len(cards)} Fragen richtig beantwortet")
         print("-" * 40)
 
-        #wenn wrong_cards leer -> Fertig
+        #Wenn die Liste wrong_cards leer ist, dann wird die Übung beendet
         if not wrong_cards:
             print("Super! Alle Karten richtig beantwortet 🎉")
             break  
