@@ -131,7 +131,7 @@ def edit_set_name():
                 print(f"Set wurde in '{new_name}' umbenannt.\n")
 
                 # Übersicht aller Sets anzeigen
-                files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f)) and f.endswith(".txt")]
+                files = manageFiles.get_available_sets()
                 helper_functions.print_sets(files)
 
 def edit_card_content():
@@ -150,66 +150,67 @@ def edit_card_content():
 
     while True:
         print("\nAus welchem Set soll eine Karte bearbeitet werden?")
-        selected_file = manageFiles.select_set()
 
+        #Set auswählen
+        selected_file = manageFiles.select_set()
         if selected_file is None:
+            # Benutzer hat -1 eingegeben, zurück zum Hauptmenü
             return
             
+        # Karte auswählen
         selected_card = manageFiles.select_card_from_set(selected_file)
-
         if selected_card is None:
             # Benutzer hat -1 eingegeben, zurück zur Set-Auswahl
             continue
 
         if helper_functions.get_yes_or_no("Möchten Sie diese Karte bearbeiten?"):
             # Alle Zeilen aus der Datei lesen
-            with open(str(selected_file), 'r', encoding="utf-8") as file:
-                lines = file.readlines()
+            lines = manageFiles.read_sets(selected_file)
 
-                # Überprüfen, ob die ausgewählte Karte noch existiert
-                if selected_card < 0 or selected_card >= len(lines):
-                    print("Karte existiert nicht mehr.")
-                    return
-                
-                # Ausgabe der aktuellen Karte
-                print(f"\nAktuelle Karte:")
-                print(f"{lines[selected_card].strip()}")
-
-                # Eingabe des neuen Inhalts
-                while True:
-
-                    new_content = input("\nGeben Sie den neuen Inhalt ein (Format: Begriff=Definition): ")
-                    new_content = new_content.strip()
-
-                    # Aufteilen des Inhalts in Begriff und Definition
-                    parts = new_content.split("=", 1)
-
-                    # Validierung des Formats
-                    if len(parts) < 2:
-                        print("Fehler: Das Format muss zwingend ein '=' enthalten.")
-                        continue
-
-                    begriff = parts[0].strip()
-                    definition = parts[1].strip()
-
-                    # Validierung, dass weder Begriff noch Definition leer sind
-                    if not begriff or not definition:
-                        print("Fehler: Weder der Begriff noch die Definition dürfen leer sein.")
-                        continue
-
-                    break  # Gültiger Inhalt, Schleife verlassen
-    
-                # Aktualisieren der ausgewählten Karte
-                lines[selected_card] = f"{begriff}={definition}\n"
-
-                # Schreibt die aktualisierten Zeilen zurück in die Datei
-                with open(str(selected_file), 'w', encoding="utf-8") as file:
-                    file.writelines(lines)
-                    print("Karteninhalt wurde aktualisiert.\n")
+            # Überprüfen, ob die ausgewählte Karte noch existiert
+            if selected_card < 0 or selected_card >= len(lines):
+                print("Karte existiert nicht mehr.")
+                return
             
-                # Übersicht aller Karten anzeigen
-                helper_functions.print_cards(manageFiles.load_cards_from_set(selected_file))
-                print()
+            # Ausgabe der aktuellen Karte
+            print(f"\nAktuelle Karte:")
+            print(f"{lines[selected_card].strip()}")
+
+            # Eingabe des neuen Inhalts
+            while True:
+
+                new_content = input("\nGeben Sie den neuen Inhalt ein (Format: Begriff=Definition): ")
+                new_content = new_content.strip()
+
+                # Aufteilen des Inhalts in Begriff und Definition
+                parts = new_content.split("=", 1)
+
+                # Validierung des Formats
+                if len(parts) < 2:
+                    print("Fehler: Das Format muss zwingend ein '=' enthalten.")
+                    continue
+
+                begriff = parts[0].strip()
+                definition = parts[1].strip()
+
+                # Validierung, dass weder Begriff noch Definition leer sind
+                if not begriff or not definition:
+                    print("Fehler: Weder der Begriff noch die Definition dürfen leer sein.")
+                    continue
+
+                break  # Gültiger Inhalt, Schleife verlassen
+
+            # Aktualisieren der ausgewählten Karte
+            lines[selected_card] = f"{begriff}={definition}\n"
+
+            # Schreibt die aktualisierten Zeilen zurück in die Datei
+            with open(str(selected_file), 'w', encoding="utf-8") as file:
+                file.writelines(lines)
+                print("Karteninhalt wurde aktualisiert.\n")
+        
+            # Übersicht aller Karten anzeigen
+            helper_functions.print_cards(manageFiles.load_cards_from_set(selected_file))
+            print()
         else:
             # Benutzer hat -1 eingegeben, zurück zur Set-Auswahl
             continue 
@@ -307,10 +308,7 @@ def delete_single_card():
     if helper_functions.get_yes_or_no("Sind Sie sicher?"):
 
         # liest alle zeilen ein
-        with open(str(selected_file), 'r', encoding="utf-8") as fs:
-            
-            # speichert alle zeilen in die variabel lines
-            lines = fs.readlines()
+        lines = manageFiles.read_sets(selected_file)
 
         # löscht die gewünschte zeile aus der variabel
         del lines[selected_card]
