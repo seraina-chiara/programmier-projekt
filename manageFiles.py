@@ -1,5 +1,33 @@
 import os
+import helper_functions
 FOLDER = "sets"
+
+def get_available_sets():
+    """
+    Gibt eine Liste aller verfügbaren Karteikarten-Sets zurück.
+    Gibt eine leere Liste zurück, wenn keine Dateien gefunden werden.
+    """
+    if not os.path.exists(FOLDER):
+        return []
+        
+    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f)) and f.endswith(".txt")]
+    return files
+
+def get_set_path(filename):
+    """Gibt den vollständigen Pfad für einen gegebenen Dateinamen zurück."""
+    return os.path.join(FOLDER, filename)
+
+def read_lines_from_set(file_path):
+    """
+    Liest alle Zeilen aus einer Set-Datei.
+    Gibt eine Liste von Strings (Zeilen) zurück.
+    """
+    if not os.path.exists(file_path):
+        return []
+        
+    with open(file_path, 'r', encoding="utf-8") as fs:
+        return fs.readlines()
+
 
 def select_set():
     """
@@ -9,18 +37,14 @@ def select_set():
     auf, eine Nummer einzugeben. Bei ungültigen Eingaben wird der Benutzer erneut
     zur Eingabe aufgefordert.
     """
-    # Alle Dateien im Ordner abrufen - os.listdir(FOLDER) holt sich alles von Ordner sets und prüft mit os.path.file ob "sets/f" eine Datei ist
-    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f)) and f.endswith(".txt")]
+    files = get_available_sets()
+
     #wenn nichts in der Liste files vorhanden ist
     if not files:
         print(f"Im Ordner '{FOLDER}' wurden keine Dateien gefunden.")
         return None
     else:
-        # alle Optionen der Dateien ausgeben
-        print("Verfügbare Dateien:")
-        #in i wird die Zahl gespeichert und in file die Dateiname
-        for i, file in enumerate(files, start=1):
-            print(f"\t{i}. {file}")
+        helper_functions.print_sets(files)
 
         while True:
             try:
@@ -32,7 +56,7 @@ def select_set():
                     selected_file = files[choice - 1]
                     print(f"\nSie haben '{choice}. {selected_file}' ausgewählt.")
                     #gibt komplette Pfad zurück
-                    return os.path.join(FOLDER, selected_file)
+                    return get_set_path(selected_file)
                 else:
                     print("Ungültige Nummer. Bitte erneut versuchen.")
             except ValueError:
@@ -48,9 +72,7 @@ def select_card_from_set(selected_file):
     Args:
         selected_file (str): Pfad zur Set-Datei, aus der eine Karte ausgewählt werden soll
     """
-    # Alle Karten aus der Datei lesen
-    with open(str(selected_file), 'r', encoding="utf-8") as fs:
-        lines = fs.readlines()
+    lines = read_lines_from_set(str(selected_file))
 
 #Validierung ob lines leer ist
     if not lines:
@@ -58,8 +80,7 @@ def select_card_from_set(selected_file):
         return None
 
 # Alle Karten anzeigen
-    for i, line in enumerate(lines, start=1):
-        print(f"\t{i}. {line.strip()}")
+    helper_functions.print_cards(load_cards_from_set(selected_file))
 
     while True:
         try:
@@ -103,20 +124,19 @@ def load_cards_from_set(file_path):
     
     except FileNotFoundError:
         print(f"Die Datei {file_path} wurde nicht gefunden.")
-        #gibt leere Liste zurück damit das Programm nicht crasht
         return []
-    except Exception as e:
-        print(f"Ein Fehler ist aufgetreten: {e}")
+    except OSError as e:
+        print(f"Dateifehler: {e}")
         return []
         
 def check_set_name(name: str):
     """Prüft, ob ein Name, den der User für ein neues Set eingegeben hat, zulässig ist."""
     #keine Eingabe
-    if not name :
-        print("Bitte geben Sie etwas ein. ")
+    if not name:
+        print("Bitte geben Sie etwas ein.")
         return False
     
-    files = [f for f in os.listdir(FOLDER) if os.path.isfile(os.path.join(FOLDER, f)) and f.endswith(".txt")]
+    files = get_available_sets()
     # alle namen iterieren
     for file in files:
         # falls die namen gleich sind, ist es ein fehler. Alles wird klein gemacht und .txt wird entfernt damit Name geprüft wird
