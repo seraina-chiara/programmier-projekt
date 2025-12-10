@@ -162,24 +162,27 @@ def edit_card_content():
             return
 
         if helper_functions.get_yes_or_no("Möchten Sie diese Karte bearbeiten?"):
-            # Alle Zeilen aus der Datei lesen
-            with open(str(selected_file), 'r', encoding="utf-8") as file:
-                lines = file.readlines()
+            continue
+        with open(selected_file, "r", encoding="utf-8") as file:
+            lines = file.readlines()
 
-                # Überprüfen, ob die ausgewählte Karte noch existiert
-                if selected_card < 0 or selected_card >= len(lines):
-                    print("Karte existiert nicht mehr.")
-                    return
-                
-                # Ausgabe der aktuellen Karte
-                print(f"\nAktuelle Karte:")
-                print(f"{lines[selected_card].strip()}")
+            # Überprüfen, ob die ausgewählte Karte noch existiert
+            if selected_card < 0 or selected_card >= len(lines):
+                print("Karte existiert nicht mehr.")
+                return
+            
+            # Ausgabe der aktuellen Karte
+            print(f"\nAktuelle Karte:")
+            print(f"{lines[selected_card].strip()}")
 
         # Eingabe des neuen Inhalts
         while True:
 
-            new_content = input("\nGeben Sie den neuen Inhalt ein (Format: Begriff=Definition): ")
+            new_content = input("\nGeben Sie den neuen Inhalt ein (Format: Begriff=Definition) oder 'ABBRUCH' zum Beenden: ")
             new_content = new_content.strip()
+
+            if new_content == 'ABBRUCH':
+                return
 
             # Aufteilen des Inhalts in Begriff und Definition
             parts = new_content.split("=", 1)
@@ -197,6 +200,10 @@ def edit_card_content():
                 print("Fehler: Weder der Begriff noch die Definition dürfen leer sein.")
                 continue
 
+            # Validierung, dass kein '=' in Begriff oder Definition enthalten ist
+            if "=" in begriff or "=" in definition:
+                print("Fehler: '=' ist in Begriff oder Definition nicht erlaubt.")
+                continue
             break  # Gültiger Inhalt, Schleife verlassen
     
         # Aktualisieren der ausgewählten Karte
