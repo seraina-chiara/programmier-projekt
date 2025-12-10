@@ -144,21 +144,22 @@ def edit_card_content():
    
     Bei ungültigem Format wird eine Fehlermeldung angezeigt und der Benutzer
     kann es erneut versuchen.
+    
+    Der Benutzer kann -1 eingeben, um zurück zum Hauptmenü zu gehen.
     """
 
     while True:
-        print("Aus welchem Set soll eine Karte bearbeitet werden?")
+        print("\nAus welchem Set soll eine Karte bearbeitet werden?")
         selected_file = manageFiles.select_set()
 
         if selected_file is None:
-            print("Es konnte kein Set ausgewählt werden")
             return
             
         selected_card = manageFiles.select_card_from_set(selected_file)
 
         if selected_card is None:
-            print("Es konnte keine Karte ausgewählt werden")
-            return
+            # Benutzer hat -1 eingegeben, zurück zur Set-Auswahl
+            continue
 
         if helper_functions.get_yes_or_no("Möchten Sie diese Karte bearbeiten?"):
             # Alle Zeilen aus der Datei lesen
@@ -207,9 +208,11 @@ def edit_card_content():
                     print("Karteninhalt wurde aktualisiert.\n")
             
                 # Übersicht aller Karten anzeigen
-                for i, card in enumerate(manageFiles.load_cards_from_set(selected_file), start=1):
-                    print(f"{i}. {card[0]} = {card[1]}")
-                print() 
+                helper_functions.print_cards(manageFiles.load_cards_from_set(selected_file))
+                print()
+        else:
+            # Benutzer hat -1 eingegeben, zurück zur Set-Auswahl
+            continue 
 
 # -----------------------------
 # Option 3 – Set oder Karte löschen

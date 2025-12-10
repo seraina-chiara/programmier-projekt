@@ -49,9 +49,12 @@ def select_set():
         while True:
             try:
                 # Auswahl eines bestimmten Sets
-                choice = int(input(f"Geben Sie das gewünschte Set an (Nummer zwischen 1 und {len(files)}): "))
+                choice = int(input(f"Geben Sie das gewünschte Set an (Nummer zwischen 1 und {len(files)}, oder -1 zum Abbrechen): "))
+                # Wenn -1, dann abbrechen
+                if choice == -1:
+                    return None
                 #wenn choice zwischen 1 und len(files) ist
-                if 1 <= choice <= len(files):
+                elif 1 <= choice <= len(files):
                     #-1 weil index bei 0 startet
                     selected_file = files[choice - 1]
                     print(f"\nSie haben '{choice}. {selected_file}' ausgewählt.")
@@ -85,8 +88,11 @@ def select_card_from_set(selected_file):
     while True:
         try:
             # Auswahl einer bestimmten Karte
-            choice = int(input(f"\nGeben Sie die gewünschte Karte an (Nummer zwischen 1 und {len(lines)}): "))
-            if 1 <= choice <= len(lines):
+            choice = int(input(f"\nGeben Sie die gewünschte Karte an (Nummer zwischen 1 und {len(lines)}, oder -1 zum Abbrechen): "))
+            # Wenn -1, dann abbrechen
+            if choice == -1:
+                return None
+            elif 1 <= choice <= len(lines):
                 selected_card = lines[choice - 1].strip()
                 print(f"\nSie haben '{choice}. {selected_card}' ausgewählt.")
                 return choice - 1
