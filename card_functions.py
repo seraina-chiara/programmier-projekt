@@ -91,7 +91,7 @@ def edit_cards():
                 edit_card_content()
 
             else:
-                print("Das war keine gültige Auswahl")
+                print("Bitte geben Sie eine gültige Option ein.")
 
         except ValueError:
             print("Ungültige Eingabe, bitte geben Sie eine Zahl ein.")
