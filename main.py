@@ -8,12 +8,12 @@ import helper_functions
 def show_menu():
     """Zeigt das Hauptmenü mit allen verfügbaren Optionen an."""
 
-    print("\nWähle aus zwischen diesen Optionen:")
+    print("\nBitte wählen Sie eine der folgenden Optionen:")
     print("\t1. Neues Karteikartenset anlegen")
     print("\t2. Bestehende Karten aus einem Set bearbeiten")
     print("\t3. Set oder Karten aus einem Set löschen")
     print("\t4. Bestehendes Set üben")
-    print("Geben Sie ein -1 ein um das Programm zu beenden")
+    print("Geben Sie ein -1 ein um das Programm zu beenden.")
 
 
 
@@ -30,7 +30,7 @@ def choose_option():
         try:
             option = int(input("Welche dieser Optionen möchten Sie auswählen? "))
         except ValueError:
-            print("Diese Option ist nicht gültig")
+            print("Bitte geben Sie eine Zahl ein (1-4 oder -1 zum Beenden).")
             continue
 
         # close application if user gives -1
@@ -47,7 +47,7 @@ def choose_option():
         elif option == 4:
             card_functions.learn_set()
         else: 
-            print("Das ist keine gültige Auswahl")
+            print("Bitte wählen Sie eine Option zwischen 1 und 4 oder -1 zum Beenden.")
 
 
 def main():
