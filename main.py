@@ -1,6 +1,5 @@
 import card_functions
 import helper_functions
-FOLDER = "sets"
 
 
 # -----------------------------
