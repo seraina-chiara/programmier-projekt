@@ -49,8 +49,8 @@ def create_set():
         # für alle karten iterieren
         for i in range(1, card_count + 1):
             # begriff und definition abfragen
-            begriff = input(f"Geben Sie {i}. Begriff ein: ")
-            definition = input(f"Geben Sie {i}. Definition ein: ")
+            begriff = input(f"Geben Sie {i}. Begriff ein: ").strip()
+            definition = input(f"Geben Sie {i}. Definition ein: ").strip()
             # mit = getrennt abspeichern
             file.write(f"{begriff}={definition}\n")
         print("Das Set wurde mit den gewünschten Karten abgespeichert.")
