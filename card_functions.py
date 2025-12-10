@@ -1,7 +1,6 @@
 import manageFiles
 import helper_functions
 import os
-FOLDER = "sets"
 
 
 # -----------------------------
@@ -39,12 +38,11 @@ def create_set():
             print("Das war keine gültige Auswahl") 
 
     # existiert der Ordner
-    if not os.path.exists(FOLDER):
-        os.makedirs(FOLDER)
+    if not os.path.exists(manageFiles.FOLDER):
+        os.makedirs(manageFiles.FOLDER)
 
     # Datei-Pfad zusammensetzen (Titel + .txt)
-    file_path = os.path.join(FOLDER, f"{new_set_title}.txt")
-
+    file_path = os.path.join(manageFiles.FOLDER, f"{new_set_title}.txt")
     with open(file_path, "w", encoding="utf-8") as file:
         # für alle karten iterieren
         for i in range(1, card_count + 1):
