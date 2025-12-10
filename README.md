@@ -208,8 +208,7 @@ Hauptstadt von Frankreich=Paris
 ## Voraussetzungen
 
 ### Python-Version
-- **Python 3.7 oder höher** wird empfohlen
-- Python 3.6 könnte funktionieren, ist aber nicht getestet
+- **Python 3.9 oder höher** 
 
 ### Benötigte Bibliotheken
 Alle verwendeten Module sind Teil der Python Standard-Bibliothek:
