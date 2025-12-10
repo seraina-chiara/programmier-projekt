@@ -163,7 +163,7 @@ def edit_card_content():
 
         if helper_functions.get_yes_or_no("Möchten Sie diese Karte bearbeiten?"):
             # Alle Zeilen aus der Datei lesen
-            lines = manageFiles.read_sets(selected_file)
+            lines = manageFiles.read_lines_from_set(str(selected_file))
 
             # Überprüfen, ob die ausgewählte Karte noch existiert
             if selected_card < 0 or selected_card >= len(lines):
@@ -306,7 +306,7 @@ def delete_single_card():
     if helper_functions.get_yes_or_no("Sind Sie sicher?"):
 
         # liest alle zeilen ein
-        lines = manageFiles.read_sets(selected_file)
+        lines = manageFiles.read_lines_from_set(str(selected_file))
 
         # löscht die gewünschte zeile aus der variabel
         del lines[selected_card]
