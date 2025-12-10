@@ -114,7 +114,7 @@ def edit_set_name():
         print("Es konnte kein Set ausgewählt werden")
         return
 
-    if selected_file and os.path.exists(selected_file):
+    if os.path.exists(selected_file):
         if helper_functions.get_yes_or_no("Möchten Sie dieses Set bearbeiten?"):
             
             # Neuen Namen für das Set eingeben
@@ -272,7 +272,7 @@ def delete_entire_set():
         return
 
     # falls ein set gewählt wurde, und diese datei auch existiert
-    if selected_file and os.path.exists(selected_file):
+    if os.path.exists(selected_file):
         # bestätigung
         if helper_functions.get_yes_or_no("Sind Sie sicher?"):
             # löschen der ganzen datei
