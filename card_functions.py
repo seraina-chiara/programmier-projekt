@@ -271,6 +271,9 @@ def delete_entire_set():
     """
     selected_file = manageFiles.select_set()
 
+    if selected_file is None:
+        return
+
     # falls ein set gewählt wurde, und diese datei auch existiert
     if selected_file and os.path.exists(selected_file):
         # bestätigung
