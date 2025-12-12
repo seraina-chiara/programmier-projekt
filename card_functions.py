@@ -379,6 +379,8 @@ def learn_set():
         while True:
             again = input("Möchten Sie die falsch beantworteten Karten erneut üben? j/n: ").lower()
             if again =="j":    
+                #nächste Runde sind nur die Karten, die wir falsch hatten
+                current_cards = wrong_cards  
                 #Schleife geht weiter, aber nur wrong_cards werden geprüft
                 break
             elif again == "n":
@@ -388,7 +390,5 @@ def learn_set():
             else:
                 print("Bitte nur 'j' oder 'n' eingeben.")
 
-        #nächste Runde sind nur die Karten, die wir falsch hatten
-        current_cards = wrong_cards  
 
     print(f"Übung beendet. Insgesamt richtig beantwortet: {counter} von {len(cards)} Fragen")
